@@ -3,7 +3,8 @@ using Avalonia.Input;
 namespace AVASentinel.Engine;
 
 /// <summary>
-/// Keyboard and gamepad boiled down to the controls: left and right, up and down (up the screen is -1), and three buttons.
+/// Keyboard and gamepad boiled down to the controls: turning left and right, tilting up and down (looking up is +1),
+/// and the act on the square in the sights.
 /// </summary>
 public sealed class InputHandler : IDisposable
 {

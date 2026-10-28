@@ -52,11 +52,10 @@ project: a warning fails the build, so keep it at zero.
 - **Engine first, drawing second.** Gameplay belongs in `Engine/`, where tests can reach it without a window.
   `Views/` only reads the world and draws it.
 - **Input goes through `InputHandler`.** `Controls` is `Turn`, `Tilt` and an `Act`. There is no `dy`: `Tilt` is
-  +1 for looking up, on keys and stick alike (the stick pushed up, `LeftStickY < -0.4`, gives +1). The class comment
-  on `InputHandler` says "up the screen is -1"; the code is what counts. Keep keys and stick agreeing when adding
-  controls.
-- **SDL under one lock.** `ControllerManager` starts, polls and stops SDL only inside `lock (Sdl)`. The tests
-  create many handlers in parallel, and unlocked SDL calls corrupt its heap.
+  +1 for looking up, on keys and stick alike (the stick pushed up, `LeftStickY < -0.4`, gives +1). Keep keys and
+  stick agreeing when adding controls.
+- **SDL under one lock.** `ControllerManager` starts, polls and stops SDL only inside `lock (Sdl)`. SDL is not
+  safe to start, poll or stop from two threads at once, and the tests can make handlers on two threads at once.
 - **Audio.** OpenAL Soft through Silk.NET. `Directory.Build.targets` swaps in the official Windows `soft_oal.dll`
   from `Audio/native/`, which needs no Visual C++ runtime. In a virtual machine `OpenAlConfig` writes a larger
   mixing period to `ALSOFT_CONF` so the sound doesn't break up.
